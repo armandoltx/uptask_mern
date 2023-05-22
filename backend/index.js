@@ -3,12 +3,19 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import conectarDB from './config/db.js'
+import usuarioRoutes from './routes/usuarioRoutes.js'
 
 const app = express()
 
 dotenv.config()
 
 conectarDB()
+
+// Routing
+app.use("/api/usuarios", usuarioRoutes) // use soporta todos los verbos CRUD
+
+
+
 
 const PORT = process.env.PORT || 4000
 
