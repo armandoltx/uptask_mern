@@ -1,6 +1,5 @@
 
-const usuarios = (req, res) => {
-  res.json({ msg: 'Desde API/Usuarios' })
+const registrar = (req, res) => {
 }
 
-export { usuarios }
+export { registrar }
