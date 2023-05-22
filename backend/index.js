@@ -6,6 +6,7 @@ import conectarDB from './config/db.js'
 import usuarioRoutes from './routes/usuarioRoutes.js'
 
 const app = express()
+app.use(express.json()) // para procesar la info tipo json q viene de los post de los controllers
 
 dotenv.config()
 
