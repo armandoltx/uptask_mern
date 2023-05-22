@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 const conectarDB = async () => {
   try {
     const connection = await mongoose.connect(
-      "mongodb+srv://dbMernTask:dbMernTask@cluster0.redzmok.mongodb.net/uptask",
+      process.env.MONGO_URI,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true
