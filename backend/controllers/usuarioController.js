@@ -29,7 +29,7 @@ const autenticar = async (req, res) => {
   const { email, password } = req.body
   // Comprobar q el usuario existe
   const usuario = await Usuario.findOne({ email })
-  console.log(`usuario => ${usuario}`)
+  // console.log(`usuario => ${usuario}`)
   if(!usuario) {
     const error = new Error("El Usuario no existe")
     return res.status(404).json({ msg: error.message })
@@ -78,8 +78,26 @@ const confirmar = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-
 }
 
+const olvidePassword = async (req, res) => {
+  const { email } = req.body
+  // Comprobar q el usuario existe
+  const usuario = await Usuario.findOne({ email })
+  // console.log(`usuario => ${usuario}`)
+  if(!usuario) {
+    const error = new Error("El Usuario no existe")
+    return res.status(404).json({ msg: error.message })
+  }
 
-export { registrar, autenticar, confirmar }
+  try {
+    usuario.token = generarId()
+    // console.log(`usuario => ${usuario}`)
+    await usuario.save()
+    res.json({msg: "Hemos enviado un email con las instrucciones"})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export { registrar, autenticar, confirmar, olvidePassword }
