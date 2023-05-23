@@ -24,4 +24,9 @@ const registrar = async (req, res) => {
   }
 }
 
-export { registrar }
+const autenticar = async (req, res) => {
+
+}
+
+
+export { registrar, autenticar }
