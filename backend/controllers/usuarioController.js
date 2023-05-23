@@ -1,5 +1,6 @@
 import Usuario from "../models/Usuario.js"
 import generarId from "../helpers/generarId.js"
+import generarJWT from "../helpers/generarJWT.js"
 
 const registrar = async (req, res) => {
   // console.log(req.body)
@@ -28,7 +29,7 @@ const autenticar = async (req, res) => {
   const { email, password } = req.body
   // Comprobar q el usuario existe
   const usuario = await Usuario.findOne({ email })
-  // console.log(`usuario => ${usuario}`)
+  console.log(`usuario => ${usuario}`)
   if(!usuario) {
     const error = new Error("El Usuario no existe")
     return res.status(404).json({ msg: error.message })
@@ -41,6 +42,19 @@ const autenticar = async (req, res) => {
   }
 
   // Comprobar el password
+  if(await usuario.comprobarPassword(password)) {
+    // console.log("es correcto")
+    res.json({
+      _id: usuario._id,
+      nombre: usuario.nombre,
+      email: usuario.email,
+      token: generarJWT(usuario._id)
+    })
+  } else {
+    // console.log("es incorrecto")
+    const error = new Error("El Password es incorrecto")
+    return res.status(403).json({ msg: error.message })
+  }
 }
 
 
