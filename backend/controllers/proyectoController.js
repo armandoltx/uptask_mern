@@ -21,7 +21,23 @@ const nuevoProyecto = async (req, res) => {
   }
 }
 
-const obtenerProyecto = async (req, res) => {}
+const obtenerProyecto = async (req, res) => {
+  const { id } = req.params
+  // console.log(id)
+  // ver si el proyecto existe
+  const proyecto = await Proyecto.findById(id)
+
+  if(!proyecto) {
+    const error = new Error("Proyecto no Econtrado.")
+    return res.status(404).json({ msg: error.message })
+  }
+
+  if(proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error("No tienes permiso para ver el Proyecto.")
+    return res.status(401).json({ msg: error.message })
+  }
+  res.json(proyecto)
+}
 
 const editarProyecto = async (req, res) => {}
 
