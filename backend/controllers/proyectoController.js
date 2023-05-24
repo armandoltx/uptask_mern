@@ -1,6 +1,10 @@
 import Proyecto from "../models/Proyecto.js";
 
-const obtenerProyectos = async (req, res) => {}
+const obtenerProyectos = async (req, res) => {
+  //req.usuario esta creado en el middleware asi q lo podemos usar aqui para el query
+  const proyectos = await Proyecto.find().where('creador').equals(req.usuario)
+  res.json(proyectos)
+}
 
 const nuevoProyecto = async (req, res) => {
   // console.log('nuevoProyecto')
