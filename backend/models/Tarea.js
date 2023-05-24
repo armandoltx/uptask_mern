@@ -25,7 +25,7 @@ const tareaSchema = mongoose.Schema({
     required: true,
     enum: ["Baja", "Media", "Alta"]
   },
-  proyecto: {
+  proyecto {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Proyecto"
   }

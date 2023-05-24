@@ -5,6 +5,8 @@ import dotenv from 'dotenv'
 import conectarDB from './config/db.js'
 import usuarioRoutes from './routes/usuarioRoutes.js'
 import proyectoRoutes from './routes/proyectoRoutes.js'
+import tareaRoutes from './routes/tareaRoutes.js'
+
 
 
 const app = express()
@@ -17,6 +19,7 @@ conectarDB()
 // Routing
 app.use("/api/usuarios", usuarioRoutes) // use soporta todos los verbos CRUD
 app.use("/api/proyectos", proyectoRoutes)
+app.use("api/tareas", tareaRoutes)
 
 
 
