@@ -11,7 +11,7 @@ const tareaSchema = mongoose.Schema({
     required: true,
     trim: true
   },
-  estado {
+  estado: {
     type: Boolean,
     default: false
   },
@@ -20,12 +20,12 @@ const tareaSchema = mongoose.Schema({
     required: true,
     default: Date.now(),
   },
-  prioridad {
+  prioridad: {
     type: String,
     required: true,
     enum: ["Baja", "Media", "Alta"]
   },
-  proyecto {
+  proyecto: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Proyecto"
   }
@@ -34,5 +34,5 @@ const tareaSchema = mongoose.Schema({
   timestamps: true
 })
 
-const Proyecto = mongoose.model("Tarea", tareaSchema)
+const Tarea = mongoose.model("Tarea", tareaSchema)
 export default Tarea

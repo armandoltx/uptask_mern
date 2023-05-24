@@ -6,6 +6,7 @@ import {
   eliminarTarea,
   cambiarEstado
 } from '../controllers/tareaController.js'
+
 import checkAuth from '../middleware/checkAuth.js'
 
 

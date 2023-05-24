@@ -8,7 +8,6 @@ import proyectoRoutes from './routes/proyectoRoutes.js'
 import tareaRoutes from './routes/tareaRoutes.js'
 
 
-
 const app = express()
 app.use(express.json()) // para procesar la info tipo json q viene de los post de los controllers
 
@@ -19,7 +18,7 @@ conectarDB()
 // Routing
 app.use("/api/usuarios", usuarioRoutes) // use soporta todos los verbos CRUD
 app.use("/api/proyectos", proyectoRoutes)
-app.use("api/tareas", tareaRoutes)
+app.use("/api/tareas", tareaRoutes)
 
 
 
