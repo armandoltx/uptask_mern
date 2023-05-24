@@ -1,7 +1,24 @@
 import Proyecto from "../models/Proyecto.js";
 import Tarea from "../models/Tarea.js";
 
-const obtenerTarea = async (req, res) => {}
+const obtenerTarea = async (req, res) => {
+  const { id } = req.params
+  // console.log(id)
+  const tarea = await Tarea.findById(id).populate("proyecto")
+  console.log(tarea)
+
+  if(!tarea) {
+    const error = new Error("Tarea no Econtrada.")
+    return res.status(404).json({ msg: error.message })
+  }
+
+  if(tarea.proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error("No tienes permiso para ver la Tarea.")
+    return res.status(403).json({ msg: error.message })
+  }
+  res.json(tarea)
+}
+
 const nuevaTarea = async (req, res) => {
   // console.log(req.body)
   // nos traemos el id del proyecto
@@ -27,6 +44,7 @@ const nuevaTarea = async (req, res) => {
   }
 
 }
+
 const editarTarea = async (req, res) => {}
 const eliminarTarea = async (req, res) => {}
 const cambiarEstado = async (req, res) => {}
