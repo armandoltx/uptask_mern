@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Alerta from '../components/Alerta';
-
+import axios from 'axios'
 const Registrar = () => {
   const [ nombre, setNombre ] = useState('')
   const [ email, setEmail ] = useState('')
@@ -9,7 +9,7 @@ const Registrar = () => {
   const [ repetirPassword, setRepetirPassword ] = useState('')
   const [ alerta, setAlerta ] = useState({})
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     // Paramos la accion por default q es submit el formulario
     e.preventDefault()
 
@@ -44,7 +44,13 @@ const Registrar = () => {
     setAlerta({})
 
     // y ahora Creamos el usuario en la API
-    console.log("Creando usuario")
+    // console.log("Creando usuario")
+    try {
+      const respuesta = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, password})
+      console.log(respuesta)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const { msg } = alerta
