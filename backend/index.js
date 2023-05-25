@@ -2,6 +2,7 @@
 // const express = require('express') // va a node_modules, busca el paquete de express y lo asigna a la var.
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
 import conectarDB from './config/db.js'
 import usuarioRoutes from './routes/usuarioRoutes.js'
 import proyectoRoutes from './routes/proyectoRoutes.js'
@@ -14,6 +15,23 @@ app.use(express.json()) // para procesar la info tipo json q viene de los post d
 dotenv.config()
 
 conectarDB()
+
+// Configurar CORS
+const whitelist = ["http://127.0.0.1:5173"]
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.includes(origin)) {
+      // Puede consultar la API
+      callback(null, true)
+    } else {
+      // No esta permitido
+      callback(new Error("Error de Cors"))
+    }
+  },
+};
+
+app.use(cors(corsOptions))
 
 // Routing
 app.use("/api/usuarios", usuarioRoutes) // use soporta todos los verbos CRUD
