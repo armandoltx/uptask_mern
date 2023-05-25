@@ -22,6 +22,29 @@ const Registrar = () => {
       })
       return
     }
+
+    // Comprobar que el password y repetir password son iguales
+    if(password !== repetirPassword ) {
+      setAlerta({
+        msg: 'Los password no son iguales',
+        error: true
+      })
+      return
+    }
+
+    // Comporbar q el password es largo suficiente
+    if(password.length < 6 ) {
+      setAlerta({
+        msg: 'El Password es muy corto, agrega minimo 6 caracteres',
+        error: true
+      })
+      return
+    }
+    // si todos los campos estan bien, es decir pasan las validaciones pasamos la alerta a false
+    setAlerta({})
+
+    // y ahora Creamos el usuario en la API
+    console.log("Creando usuario")
   }
 
   const { msg } = alerta
