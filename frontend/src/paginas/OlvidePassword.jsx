@@ -15,8 +15,24 @@ const OlvidePassword = () => {
       setAlerta({
         msg: 'El Email es obligatorio',
         error: true
-      });
+      })
       return
+    }
+    // enviando el email
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password`, { email })
+      // console.log(data)
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+
+    } catch (error) {
+      // console.log(error)
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
     }
   }
 
