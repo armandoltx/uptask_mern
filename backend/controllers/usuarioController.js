@@ -9,8 +9,8 @@ const registrar = async (req, res) => {
   // Evitar los registros duplicados
   const { email } = req.body
   const existeUsuario = await Usuario.findOne({ email }) // ponemos await para q no se vaya a la otra linea hasta q esta no se haya ejecutado
-  console.log("000000")
-  console.log(existeUsuario)
+  // console.log("000000")
+  // console.log(existeUsuario)
 
   if(existeUsuario){
     const error = new Error('Usuario ya registrado')
