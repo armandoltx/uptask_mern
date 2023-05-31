@@ -6,10 +6,12 @@ import clienteAxios from '../config/clienteAxios'
 const AuthContext = createContext()
 
 const AuthProvider = ({children}) => {
+  const [hola, setHola] = useState("holaaaa")
 
   return (
     <AuthContext.Provider
       value={{
+        hola
 
       }}
     >
