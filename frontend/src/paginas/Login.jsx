@@ -10,6 +10,10 @@ const Login = () => {
   const [alerta, setAlerta] = useState({})
   const { setAuth } = useAuth()
 
+  // console.log(auth)
+  // console.log(cargando)
+
+
   const handleSubmit = async e => {
     e.preventDefault();
 

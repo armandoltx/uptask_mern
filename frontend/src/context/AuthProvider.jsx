@@ -8,6 +8,10 @@ const AuthContext = createContext()
 const AuthProvider = ({children}) => {
 
   const [ auth, setAuth ] = useState({})
+  const [cargando, setCargando] = useState(true)
+
+  const navigate = useNavigate() // para no tener q meter los datos en el formulario todo el tiempo
+
   useEffect(() => {
     // para comprobar q haya un token en localstorage
 
@@ -15,7 +19,10 @@ const AuthProvider = ({children}) => {
       const token = localStorage.getItem('token')
       // console.log(token)
       // si hay token intentamos autenticar el usuario.
-      if(!token) return
+      if(!token) {
+        setCargando(false)
+        return
+      }
       // console.log("hay token")
       const config = {
         headers: {
@@ -28,9 +35,12 @@ const AuthProvider = ({children}) => {
         const { data } = await clienteAxios('/usuarios/perfil', config)
         // console.log(data)
         setAuth(data)
-      } catch (error) {
+        navigate('/proyectos')
 
+      } catch (error) {
+        setAuth({})
       }
+      setCargando(false)
 
     }
 
@@ -41,7 +51,8 @@ const AuthProvider = ({children}) => {
     <AuthContext.Provider
       value={{
         auth,
-        setAuth
+        setAuth,
+        cargando
       }}
     >
       {children}
