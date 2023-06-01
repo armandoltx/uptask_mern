@@ -23,6 +23,12 @@ const FormularioProyecto = () => {
     }
     // Pasar los datos hacia el provider
     await submitProyecto({ nombre, descripcion, fechaEntrega, cliente})
+
+    // Resetear el formulario
+    setNombre('')
+    setDescripcion('')
+    setFechaEntrega('')
+    setCliente('')
   }
 
   const { msg } = alerta
