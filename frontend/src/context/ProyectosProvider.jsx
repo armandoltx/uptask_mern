@@ -11,6 +11,30 @@ const ProyectosProvider = ({children}) => {
 
   const navigate = useNavigate();
 
+  // Una vez listo el componente de Proyectos nos traemos los proyectos de la API
+  useEffect(() => {
+    const obtenerProyectos = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+        const { data } = await clienteAxios('/proyectos', config)
+        // console.log(data)
+        setProyectos(data)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    obtenerProyectos()
+  }, [])
+
   const mostrarAlerta = alerta => {
     setAlerta(alerta)
 
