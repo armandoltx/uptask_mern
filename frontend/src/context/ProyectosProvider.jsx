@@ -79,13 +79,37 @@ const ProyectosProvider = ({children}) => {
     }
 }
 
+  // para obtener el proyecto q vamos a renderizar en la pagina de proyecto
+  // usaremos la id q viene de Proyecto y la BD.
+const obtenerProyecto = async id => {
+  // console.log(`id => ${id}`)
+  try {
+    const token = localStorage.getItem('token')
+    if(!token) return
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    }
+
+    const { data } = await clienteAxios(`/proyectos/${id}`, config )
+    console.log(data)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
   return(
     <ProyectosContext.Provider
       value={{
         proyectos,
         alerta,
         mostrarAlerta,
-        submitProyecto
+        submitProyecto,
+        obtenerProyecto
 
       }}
     >{children}
