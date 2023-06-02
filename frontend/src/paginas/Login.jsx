@@ -8,7 +8,9 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [alerta, setAlerta] = useState({})
+
   const { setAuth } = useAuth()
+  const navigate = useNavigate()
 
   // console.log(auth)
   // console.log(cargando)
@@ -32,9 +34,10 @@ const Login = () => {
       setAlerta({})
       localStorage.setItem('token', data.token)
       setAuth(data)
+      navigate('/proyectos')
 
     } catch (error) {
-      // console.log(error)
+      console.log(error)
       setAlerta({
         msg: error.response.data.msg,
         error: true
