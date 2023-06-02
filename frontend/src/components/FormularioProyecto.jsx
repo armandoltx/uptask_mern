@@ -1,14 +1,30 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos'
 import Alerta from './Alerta'
 
 const FormularioProyecto = () => {
+  const [id, setId] = useState(null)
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [fechaEntrega, setFechaEntrega] = useState('')
   const [cliente, setCliente] = useState('')
 
-  const { alerta, mostrarAlerta, submitProyecto } = useProyectos();
+  const params = useParams()
+  // console.log(params)
+  const { alerta, mostrarAlerta, submitProyecto, proyecto } = useProyectos();
+
+  // para ver si editamos on es nuevo record si hay id en la url es editar
+  useEffect(() => {
+    console.log(params)
+    if(params.id) {
+      setId(proyecto._id)
+      setNombre(proyecto.nombre)
+      setDescripcion(proyecto.descripcion)
+      setFechaEntrega(proyecto.fechaEntrega?.split('T')[0])
+      setCliente(proyecto.cliente)
+    }
+    }, [params])
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -104,6 +120,7 @@ const FormularioProyecto = () => {
 
         <input
           type="submit"
+          value={id ? 'Actualizar Proyecto': 'Crear Proyecto'}
           className='bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors'
         />
       </form>
