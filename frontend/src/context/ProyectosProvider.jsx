@@ -72,10 +72,21 @@ const ProyectosProvider = ({children}) => {
       // console.log(data)
 
       // Sincronizar el state
+      // proyectoState es el proyecto q esta en memoria
+      const proyectosActualizados = proyectos.map(proyectoState => proyectoState._id === data._id ? data : proyectoState)
+      setProyectos(proyectosActualizados)
 
       // Mostrar alerta
-
+      setAlerta({
+        msg: 'Proyecto Actualizado Correctamente',
+        error: false
+      })
       // redireccionar
+      setTimeout(() => {
+        setAlerta({})
+        navigate('/proyectos')
+    }, 3000);
+
     } catch (error) {
       console.log(error)
     }
