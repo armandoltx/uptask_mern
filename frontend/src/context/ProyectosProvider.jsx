@@ -62,8 +62,7 @@ const ProyectosProvider = ({children}) => {
 
       const { data } = await clienteAxios.post('/proyectos', proyecto, config)
       // console.log(data)
-
-      setProyectos([...proyectos, data])
+      setProyectos([...proyectos, data]) // Para mostrar el proyecto nuevo sin necesidad de refrescar el browser
 
       setAlerta({
         msg: 'Proyecto Creado Correctamente',
