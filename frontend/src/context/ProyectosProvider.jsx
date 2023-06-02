@@ -126,31 +126,63 @@ const ProyectosProvider = ({children}) => {
 
   // para obtener el proyecto q vamos a renderizar en la pagina de proyecto
   // usaremos la id q viene de Proyecto y la BD.
-const obtenerProyecto = async id => {
-  // console.log(`id => ${id}`)
-  setCargando(true)
+  const obtenerProyecto = async id => {
+    // console.log(`id => ${id}`)
+    setCargando(true)
 
-  try {
-    const token = localStorage.getItem('token')
-    if(!token) return
+    try {
+      const token = localStorage.getItem('token')
+      if(!token) return
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
       }
+
+      const { data } = await clienteAxios(`/proyectos/${id}`, config )
+      // console.log(data)
+      setProyecto(data)
+
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setCargando(false)
     }
-
-    const { data } = await clienteAxios(`/proyectos/${id}`, config )
-    // console.log(data)
-    setProyecto(data)
-
-  } catch (error) {
-    console.log(error)
-  } finally {
-    setCargando(false)
   }
-}
+
+  const eliminarProyecto = async id => {
+    try {
+      const token = localStorage.getItem('token')
+      if(!token) return
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const { data } = await clienteAxios.delete(`/proyectos/${id}`, config)
+
+      // Sincronizar el state
+      const proyectosActualizados = proyectos.filter(proyectoState => proyectoState._id !== id )
+      setProyectos(proyectosActualizados)
+
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+
+      setTimeout(() => {
+        setAlerta({})
+        navigate('/proyectos')
+      }, 3000);
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
   return(
     <ProyectosContext.Provider
@@ -161,8 +193,8 @@ const obtenerProyecto = async id => {
         submitProyecto,
         obtenerProyecto,
         proyecto,
-        cargando
-
+        cargando,
+        eliminarProyecto
       }}
     >{children}
     </ProyectosContext.Provider>
