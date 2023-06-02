@@ -49,7 +49,7 @@ const editarProyecto = async (req, res) => {
   const { id } = req.params
   // console.log(id)
   // ver si el proyecto existe
-  const proyecto = await Proyecto.findById(proyecto._id)
+  const proyecto = await Proyecto.findById(id)
 
   if(!proyecto) {
     const error = new Error("Proyecto no Econtrado.")
