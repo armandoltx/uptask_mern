@@ -2,6 +2,8 @@ import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useProyectos from '../hooks/useProyectos'
 import Alerta from './Alerta'
+// Extraemos el proyecto de la url
+import { useParams } from 'react-router-dom'
 
 
 const PRIORIDAD = ['Baja', 'Media', 'Alta']
@@ -11,6 +13,10 @@ const ModalFormularioTarea = ({modal, setModal}) => {
     const [descripcion, setDescripcion] = useState('')
     const [fechaEntrega, setFechaEntrega] = useState('')
     const [prioridad, setPrioridad] = useState('')
+
+  // Extraemos el proyecto de la url
+    const params = useParams()
+    // console.log(params)
 
   const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea } = useProyectos()
 
@@ -26,7 +32,7 @@ const ModalFormularioTarea = ({modal, setModal}) => {
       return
     }
 
-    submitTarea({ nombre, descripcion, fechaEntrega, prioridad})
+    submitTarea({ nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id})
   }
 
   const { msg } = alerta
