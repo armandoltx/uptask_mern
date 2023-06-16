@@ -3,7 +3,7 @@ import Tarea from "../models/Tarea.js";
 
 const obtenerProyectos = async (req, res) => {
   //req.usuario esta creado en el middleware asi q lo podemos usar aqui para el query
-  const proyectos = await Proyecto.find().where('creador').equals(req.usuario)
+  const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas')
   res.json(proyectos)
 }
 
@@ -26,7 +26,7 @@ const obtenerProyecto = async (req, res) => {
   const { id } = req.params
   // console.log(id)
   // ver si el proyecto existe
-  const proyecto = await Proyecto.findById(id)
+  const proyecto = await Proyecto.findById(id).populate('tareas')
 
   // el proyecto exista
   if(!proyecto) {
