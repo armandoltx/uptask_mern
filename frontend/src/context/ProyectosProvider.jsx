@@ -240,6 +240,12 @@ const ProyectosProvider = ({children}) => {
       // console.log(data)
 
       // Acutalizar el DOM
+      // Copiamos el proyecto
+      const proyectoActualizado = { ...proyecto }
+      // ahora iteramos en las tareas del proyecto
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === data._id ? data : tareaState)
+      setProyecto(proyectoActualizado)
+
 
       setAlerta({}) // reseteamos alerta
       setModalFormularioTarea(false) // reseteamos el formulario
