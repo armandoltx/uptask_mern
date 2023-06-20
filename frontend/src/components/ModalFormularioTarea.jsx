@@ -51,9 +51,10 @@ const ModalFormularioTarea = () => {
       return
     }
 
-    await submitTarea({ nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id})
+    await submitTarea({ id, nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id})
 
     // una vez relleno el formulario y submitted borrarlos
+    setId('')
     setNombre('')
     setDescripcion('')
     setFechaEntrega('')
