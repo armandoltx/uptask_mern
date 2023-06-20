@@ -18,7 +18,11 @@ const ModalFormularioTarea = ({modal, setModal}) => {
     const params = useParams()
     // console.log(params)
 
-  const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea } = useProyectos()
+  const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea, tarea } = useProyectos()
+
+  useEffect(() => {
+    console.log(tarea)
+  },[tarea]) // cada vez q cambie la tarea q haga un rerender
 
   const handleSubmit = async e => {
     e.preventDefault();
