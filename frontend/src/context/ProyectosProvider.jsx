@@ -2,7 +2,6 @@ import { useState, useEffect, createContext } from 'react'
 import clienteAxios from '../config/clienteAxios'
 import { useNavigate } from 'react-router-dom'
 
-
 const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
@@ -11,7 +10,8 @@ const ProyectosProvider = ({children}) => {
   const [proyecto, setProyecto] = useState({})
   const [cargando, setCargando] = useState(false)
   const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
-  const [tarea, setTarea] = useState({})
+  const [ tarea, setTarea ] = useState({})
+  const [ modalEliminarTarea, setModalEliminarTarea ] = useState(false)
 
 
   const navigate = useNavigate();
@@ -225,6 +225,7 @@ const ProyectosProvider = ({children}) => {
   }
 
   const editarTarea = async tarea => {
+    console.log(tarea)
     try {
       const token = localStorage.getItem('token')
       if(!token) return
@@ -261,6 +262,51 @@ const ProyectosProvider = ({children}) => {
     setModalFormularioTarea(true)
   }
 
+  const handleModalEliminarTarea = tarea => {
+    console.log(tarea)
+    setTarea(tarea)
+    setModalEliminarTarea(!modalEliminarTarea)
+  }
+
+  const eliminarTarea = async (tarea) => {
+    console.log("eliminarTarea")
+    console.log(tarea)
+    try {
+      const token = localStorage.getItem('token')
+      if(!token) return
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const { data } = await clienteAxios.delete(`/tareas/${tarea._id}`, config)
+      // console.log(data)
+      // la tarea viene de la BD asi q en la url tiene q ser _id
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+
+
+      // Acutalizar el DOM
+      // Copiamos el proyecto
+      const proyectoActualizado = { ...proyecto }
+      proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState => tareaState._id != tarea._id )
+
+      setProyecto(proyectoActualizado)
+
+
+      setModalEliminarTarea(false) // reseteamos el formulario
+      setTarea({})
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return(
     <ProyectosContext.Provider
       value={{
@@ -276,7 +322,10 @@ const ProyectosProvider = ({children}) => {
         handleModalTarea,
         submitTarea,
         handleModalEditarTarea,
-        tarea
+        tarea,
+        modalEliminarTarea,
+        handleModalEliminarTarea,
+        eliminarTarea
       }}
     >{children}
     </ProyectosContext.Provider>

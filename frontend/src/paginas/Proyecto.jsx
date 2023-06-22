@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos'
 import ModalFormularioTarea from '../components/ModalFormularioTarea'
+import ModalEliminarTarea from '../components/ModalEliminarTarea'
 import Tarea from '../components/Tarea'
+import Alerta from '../components/Alerta'
 
 const Proyecto = () => {
   const params = useParams()
@@ -10,7 +12,7 @@ const Proyecto = () => {
   // hay q pasar el id q viene de params al provider
   // importamos useProyectos, y traemos la funcion obtenerProyecto
   // usamos el  useEffect para comprobar los cambios
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyectos()
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos()
 
   useEffect( () => {
     obtenerProyecto(params.id)
@@ -20,6 +22,8 @@ const Proyecto = () => {
   // console.log(proyecto)
 
   if(cargando) return 'Cargando...'
+
+  const { msg } = alerta
 
   return (
     <>
@@ -48,6 +52,11 @@ const Proyecto = () => {
       </button>
 
       <p className='font-bold text-xl mt-10'>Tareas del Proyecto</p>
+
+      <div className="flex justify-center">
+        {msg && <Alerta alerta={alerta} />}
+      </div>
+
       <div className='bg-white shadow mt-10 rounded-lg'>
         {proyecto.tareas?.length ?
           proyecto.tareas?.map( tarea => (
@@ -61,6 +70,7 @@ const Proyecto = () => {
       </div>
 
       <ModalFormularioTarea />
+      <ModalEliminarTarea />
     </>
   )
 };
