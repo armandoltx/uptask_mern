@@ -5,6 +5,7 @@ import {
   obtenerProyecto,
   editarProyecto,
   eliminarProyecto,
+  buscarColaborador,
   aregarColaborador,
   eliminarColaborador,
   obtenerTareas
@@ -28,9 +29,9 @@ router
   .delete(checkAuth, eliminarProyecto)
 
 // la id es del proyecto
-router.get('/tareas/:id', checkAuth, obtenerTareas)
-router.post('/agregar-colaborador/:id', checkAuth, aregarColaborador)
-router.post('/agregar-colaborador/:id', checkAuth, eliminarColaborador,
+router.post('/colaboradores', checkAuth, buscarColaborador)
+router.post('/colaboradores/:id', checkAuth, aregarColaborador)
+router.delete('/colaboradores/:id', checkAuth, eliminarColaborador,
 )
 
 
