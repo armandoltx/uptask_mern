@@ -4,6 +4,7 @@ import useAdmin from '../hooks/useAdmin'
 
 
 const Tarea = ({tarea}) => {
+  console.log(tarea)
   const {handleModalEditarTarea, handleModalEliminarTarea, completarTarea } = useProyectos()
   const admin = useAdmin()
 
@@ -16,7 +17,7 @@ const Tarea = ({tarea}) => {
         <p className="mb-1 text-sm text-gray-500 uppercase">{descripcion}</p>
         <p className="mb-1 text-sm">{ formatearFecha(fechaEntrega) }</p>
         <p className="mb-1 text-gray-600">Prioridad: {prioridad}</p>
-        {estado && <p className="text-xs bg-green-600 uppercase p-1 rounded-lg text-white">Completada por: {tarea.completado.nombre}</p>}
+        {estado && <p className="text-xs bg-green-600 uppercase p-1 rounded-lg text-white">Completada por: {tarea.completado}</p>}
       </div>
 
     <div className="flex flex-col lg:flex-row gap-2">

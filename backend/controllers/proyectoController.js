@@ -34,8 +34,11 @@ const obtenerProyecto = async (req, res) => {
   // console.log(id)
   // ver si el proyecto existe
   const proyecto = await Proyecto.findById(id)
-    .populate({ path: 'tareas', populate: {path: 'completado', select: "nombre"}})
-    .populate('colaboradores' , "nombre email")
+    .populate({
+      path: "tareas",
+      populate: {path: "completado", select: "nombre"},
+    })
+    .populate("colaboradores", "nombre email");
 
   // el proyecto exista
   if(!proyecto) {
