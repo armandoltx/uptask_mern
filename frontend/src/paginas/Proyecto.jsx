@@ -30,7 +30,7 @@ const Proyecto = () => {
   const { msg } = alerta
 
   return (
-    msg && alerta.error ? <Alerta alerta={alerta} /> : (
+
       <>
         <div className='flex justify-between'>
           <h1 className='font-black text-4xl'>{nombre}</h1>
@@ -62,9 +62,7 @@ const Proyecto = () => {
 
         <p className='font-bold text-xl mt-10'>Tareas del Proyecto</p>
 
-        <div className="flex justify-center">
-          {msg && <Alerta alerta={alerta} />}
-        </div>
+
 
         <div className='bg-white shadow mt-10 rounded-lg'>
           {proyecto.tareas?.length ?
@@ -104,7 +102,7 @@ const Proyecto = () => {
         <ModalEliminarTarea />
         <ModalEliminarColaborador />
       </>
-    )
+
   )
 };
 
