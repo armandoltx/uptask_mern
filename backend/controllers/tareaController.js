@@ -129,12 +129,12 @@ const cambiarEstado = async (req, res) => {
   }
 
   tarea.estado = !tarea.estado;
-  tarea.completado = req.usuario._id;
+  tarea.completado = req.usuario._id
   await tarea.save();
 
   const tareaAlmacenada = await Tarea.findById(id)
     .populate("proyecto")
-    .populate("completado");
+    .populate("completado")
 
   res.json(tareaAlmacenada);
 }
