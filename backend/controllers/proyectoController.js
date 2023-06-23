@@ -43,8 +43,8 @@ const obtenerProyecto = async (req, res) => {
     return res.status(404).json({ msg: error.message })
   }
 
-  // es el creador del proyecto
-  if(proyecto.creador.toString() !== req.usuario._id.toString()) {
+  // es el creador del proyecto o colaborador
+  if(proyecto.creador.toString() !== req.usuario._id.toString() && !proyecto.colaboradores.some(colaborador => colaborador._id.toString()) === req.usuario._id.toString()) {
     const error = new Error("No tienes permiso para ver el Proyecto.")
     return res.status(401).json({ msg: error.message })
   }
