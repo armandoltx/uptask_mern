@@ -4,7 +4,13 @@ import Usuario from "../models/Usuario.js";
 
 const obtenerProyectos = async (req, res) => {
   //req.usuario esta creado en el middleware asi q lo podemos usar aqui para el query
-  const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas')
+  const proyectos = await Proyecto.find({
+    '$or' : [
+      {'colaboradores': {$in: req.usuario}},
+      {'creador': {$in: req.usuario}}
+    ]
+  })
+    .select('-tareas')
   res.json(proyectos)
 }
 
