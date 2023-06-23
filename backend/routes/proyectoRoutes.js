@@ -31,7 +31,7 @@ router
 // la id es del proyecto
 router.post('/colaboradores', checkAuth, buscarColaborador)
 router.post('/colaboradores/:id', checkAuth, aregarColaborador)
-router.delete('/colaboradores/:id', checkAuth, eliminarColaborador,
+router.post('/eliminar-colaborador/:id', checkAuth, eliminarColaborador,
 )
 
 
