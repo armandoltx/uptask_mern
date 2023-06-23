@@ -100,8 +100,38 @@ const eliminarTarea = async (req, res) => {
     console.log(error)
   }
 }
+
 const cambiarEstado = async (req, res) => {
-  console.log(req.params.id)
+  const {id} = req.params;
+
+  const tarea = await Tarea.findById(id).populate("proyecto");
+
+  // q la tarea exista
+  if (!tarea) {
+    const error = new Error("Tarea no encontrada");
+    return res.status(404).json({msg: error.message});
+  }
+
+  // q sea creador del proyecto o colaborador
+  if (
+    tarea.proyecto.creador.toString() !== req.usuario._id.toString() &&
+    !tarea.proyecto.colaboradores.some(
+      (colaborador) => colaborador._id.toString() === req.usuario._id.toString()
+    )
+  ) {
+    const error = new Error("Acción no válida");
+    return res.status(403).json({msg: error.message});
+  }
+
+  tarea.estado = !tarea.estado;
+  tarea.completado = req.usuario._id;
+  await tarea.save();
+
+  const tareaAlmacenada = await Tarea.findById(id)
+    .populate("proyecto")
+    .populate("completado");
+
+  res.json(tareaAlmacenada);
 }
 
 export {
