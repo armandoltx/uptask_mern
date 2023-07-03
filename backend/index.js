@@ -61,4 +61,7 @@ io.on("connection", (socket) => {
   console.log("Conectado a socket.io");
 
   // Definir los eventos de socket io
+  socket.on('prueba', (proyectos) => { // se tiene q llamar igual q en el frontend
+    console.log('prueba desde Socket io', proyectos)
+  });
 })
