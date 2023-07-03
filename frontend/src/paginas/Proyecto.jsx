@@ -18,7 +18,16 @@ const Proyecto = () => {
   // hay q pasar el id q viene de params al provider
   // importamos useProyectos, y traemos la funcion obtenerProyecto
   // usamos el  useEffect para comprobar los cambios
-  const {obtenerProyecto, proyecto, cargando, handleModalTarea, alerta, submitTareasProyecto } = useProyectos()
+  const {
+    obtenerProyecto,
+    proyecto,
+    cargando,
+    handleModalTarea,
+    alerta,
+    submitTareasProyecto,
+    eliminarTareaProyecto
+  } = useProyectos()
+
   const admin = useAdmin()
 
   useEffect( () => {
@@ -35,6 +44,12 @@ const Proyecto = () => {
       // console.log(tareaNuevea)
       if(tareaNuevea.proyecto === proyecto._id) {
         submitTareasProyecto(tareaNuevea)
+      }
+    })
+
+    socket.on('tarea eliminada', (tareaEliminada) => {
+      if(tareaEliminada.proyecto === proyecto._id) {
+        eliminarTareaProyecto(tareaEliminada)
       }
     })
   })
