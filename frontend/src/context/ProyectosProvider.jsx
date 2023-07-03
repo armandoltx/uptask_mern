@@ -1,6 +1,9 @@
 import { useState, useEffect, createContext } from 'react'
 import clienteAxios from '../config/clienteAxios'
 import { useNavigate } from 'react-router-dom'
+import io from 'socket.io-client'
+
+let socket;
 
 const ProyectosContext = createContext()
 
@@ -42,6 +45,11 @@ const ProyectosProvider = ({children}) => {
     }
     obtenerProyectos()
   }, [])
+
+  // abrir la conexion con socket io
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL) // abro la conexion
+  },[])
 
   const mostrarAlerta = alerta => {
     setAlerta(alerta)
@@ -220,12 +228,13 @@ const ProyectosProvider = ({children}) => {
 
       const { data } = await clienteAxios.post('/tareas', tarea, config)
       console.log(data)
-      // Agrega la tarea al state
-      const proyectoActualizado = { ...proyecto }
-      proyectoActualizado.tareas = [...proyecto.tareas, data]
-      setProyecto(proyectoActualizado)
+
       setAlerta({}) // reseteamos alerta
       setModalFormularioTarea(false) // reseteamos el formulario
+
+      // SOCKET IO
+      socket.emit('nueva tarea', data) // pasamos la respuesta del servidor a socket
+
     } catch (error) {
       console.log(error)
     }
@@ -429,7 +438,6 @@ const ProyectosProvider = ({children}) => {
       const {data} = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
       // console.log(data)
       const proyectoActualizado = {...proyecto}
-
       proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
       setProyecto(proyectoActualizado)
       setTarea({})
@@ -442,6 +450,13 @@ const ProyectosProvider = ({children}) => {
 
   const handleBuscador = () => {
     setBuscador(!buscador)
+  }
+
+  // Socket io
+  const submitTareasProyecto = (tarea) => {
+    const proyectoActualizado = {...proyecto}
+    proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea]
+    setProyecto(proyectoActualizado)
   }
 
   return(
@@ -471,7 +486,8 @@ const ProyectosProvider = ({children}) => {
         eliminarColaborador,
         completarTarea,
         buscador,
-        handleBuscador
+        handleBuscador,
+        submitTareasProyecto
       }}
     >{children}
     </ProyectosContext.Provider>

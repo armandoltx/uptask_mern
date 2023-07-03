@@ -18,7 +18,7 @@ const Proyecto = () => {
   // hay q pasar el id q viene de params al provider
   // importamos useProyectos, y traemos la funcion obtenerProyecto
   // usamos el  useEffect para comprobar los cambios
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos()
+  const {obtenerProyecto, proyecto, cargando, handleModalTarea, alerta, submitTareasProyecto } = useProyectos()
   const admin = useAdmin()
 
   useEffect( () => {
@@ -31,8 +31,11 @@ const Proyecto = () => {
   }, [])// se ejecuta para entrar en la room
 
   useEffect(() => {
-    socket.on('respuesta', (persona) => {
-      console.log(persona)
+    socket.on('tarea agregada', (tareaNuevea) => {
+      // console.log(tareaNuevea)
+      if(tareaNuevea.proyecto === proyecto._id) {
+        submitTareasProyecto(tareaNuevea)
+      }
     })
   })
 

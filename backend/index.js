@@ -64,10 +64,12 @@ io.on("connection", (socket) => {
   socket.on("abrir proyecto", (proyecto) => {
     // console.log('Desde Proyecto', proyecto)
     socket.join(proyecto) // cada usuario entrara a un socket diferente
+  });
 
-    // socket.emit('respuesta', { nombre: "armando"}) // enviamos respuesta a todas las rooms a todos los usuarios
-    // para enviar la respuesta solo a un usuario"
-    socket.to("647828d7ba4998dd1fb0be46").emit('respuesta', {nombre: "armando"})
+  socket.on("nueva tarea", (tarea) => {
+    // console.log(tarea)
+    const proyecto = tarea.proyecto;
+    socket.to(proyecto).emit("tarea agregada", tarea);
   });
 
 })
