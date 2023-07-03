@@ -8,6 +8,9 @@ import ModalEliminarColaborador from '../components/ModalEliminarColaborador'
 import Tarea from '../components/Tarea'
 import Alerta from '../components/Alerta'
 import Colaborador from '../components/Colaborador'
+import io from 'socket.io-client'
+
+let socket;
 
 const Proyecto = () => {
   const params = useParams()
@@ -21,6 +24,17 @@ const Proyecto = () => {
   useEffect( () => {
     obtenerProyecto(params.id)
   }, [])
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL) // abro la conexion
+    socket.emit('abrir proyecto', params.id) // le digo en q proyecto estoy
+  }, [])// se ejecuta para entrar en la room
+
+  useEffect(() => {
+    socket.on('respuesta', (persona) => {
+      console.log(persona)
+    })
+  })
 
   const { nombre } = proyecto
   // console.log(proyecto)

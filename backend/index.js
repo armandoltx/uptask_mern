@@ -61,10 +61,13 @@ io.on("connection", (socket) => {
   console.log("Conectado a socket.io");
 
   // Definir los eventos de socket io
-  socket.on('prueba', (proyectos) => { // se tiene q llamar igual q en el frontend
-    console.log('prueba desde Socket io', proyectos)
+  socket.on("abrir proyecto", (proyecto) => {
+    // console.log('Desde Proyecto', proyecto)
+    socket.join(proyecto) // cada usuario entrara a un socket diferente
 
-    // enviar respuest
-    socket.emit('respuesta', {nombre: "Armando"})
+    // socket.emit('respuesta', { nombre: "armando"}) // enviamos respuesta a todas las rooms a todos los usuarios
+    // para enviar la respuesta solo a un usuario"
+    socket.to("647828d7ba4998dd1fb0be46").emit('respuesta', {nombre: "armando"})
   });
+
 })
