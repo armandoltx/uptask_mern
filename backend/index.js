@@ -63,5 +63,8 @@ io.on("connection", (socket) => {
   // Definir los eventos de socket io
   socket.on('prueba', (proyectos) => { // se tiene q llamar igual q en el frontend
     console.log('prueba desde Socket io', proyectos)
+
+    // enviar respuest
+    socket.emit('respuesta', {nombre: "Armando"})
   });
 })
