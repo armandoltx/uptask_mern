@@ -413,8 +413,7 @@ const ProyectosProvider = ({children}) => {
   }
 
   const completarTarea = async id => {
-    console.log("completar tarea")
-    console.log(tarea)
+    console.log("completar tarea ", id)
     try {
       const token = localStorage.getItem('token')
       if (!token) return
@@ -425,13 +424,15 @@ const ProyectosProvider = ({children}) => {
           Authorization: `Bearer ${token}`
         }
       }
+
+      console.log("completar tarea 222222", id)
       const {data} = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
       // console.log(data)
-      const proyectoActualizado = {...proyecto}
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === data._id ? data : tareaState)
-      setProyecto(proyectoActualizado)
       setTarea({})
       setAlerta({})
+
+      // socket
+      socket.emit('cambiar estado', data)
 
     } catch (error) {
       console.log(error.response)
@@ -466,6 +467,12 @@ const ProyectosProvider = ({children}) => {
     setProyecto(proyectoActualizado)
   }
 
+  const cambiarEstadoTarea = tarea => {
+    const proyectoActualizado = {...proyecto}
+    proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === tarea._id ? tarea : tareaState)
+    setProyecto(proyectoActualizado)
+  }
+
   return(
     <ProyectosContext.Provider
       value={{
@@ -496,7 +503,8 @@ const ProyectosProvider = ({children}) => {
         handleBuscador,
         submitTareasProyecto,
         eliminarTareaProyecto,
-        actualizarTareaProyecto
+        actualizarTareaProyecto,
+        cambiarEstadoTarea
       }}
     >{children}
     </ProyectosContext.Provider>
