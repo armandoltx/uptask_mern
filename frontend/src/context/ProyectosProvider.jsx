@@ -256,16 +256,11 @@ const ProyectosProvider = ({children}) => {
       const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
       // console.log(data)
 
-      // Acutalizar el DOM
-      // Copiamos el proyecto
-      const proyectoActualizado = { ...proyecto }
-      // ahora iteramos en las tareas del proyecto
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === data._id ? data : tareaState)
-      setProyecto(proyectoActualizado)
-
-
       setAlerta({}) // reseteamos alerta
       setModalFormularioTarea(false) // reseteamos el formulario
+
+      // Socket io
+      socket.emit('actualizar tarea', data) // pasamos la respuesta del servidor a socket
 
     } catch (error) {
       console.log(error)
@@ -462,6 +457,15 @@ const ProyectosProvider = ({children}) => {
     setProyecto(proyectoActualizado)
   }
 
+  const actualizarTareaProyecto = tarea => {
+    // Acutalizar el DOM
+    // Copiamos el proyecto
+    const proyectoActualizado = {...proyecto}
+    // ahora iteramos en las tareas del proyecto
+    proyectoActualizado.tareas = proyectoActualizado.tareas.map(tareaState => tareaState._id === tarea._id ? tarea : tareaState)
+    setProyecto(proyectoActualizado)
+  }
+
   return(
     <ProyectosContext.Provider
       value={{
@@ -491,7 +495,8 @@ const ProyectosProvider = ({children}) => {
         buscador,
         handleBuscador,
         submitTareasProyecto,
-        eliminarTareaProyecto
+        eliminarTareaProyecto,
+        actualizarTareaProyecto
       }}
     >{children}
     </ProyectosContext.Provider>
